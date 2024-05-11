@@ -9,7 +9,7 @@ public class CollectPages : MonoBehaviour
 
     public AudioSource collectSound;
 
-    private GameObject page;
+    public GameObject page;
 
     private bool inReach;
 
@@ -26,7 +26,7 @@ public class CollectPages : MonoBehaviour
         gameLogic = GameObject.FindWithTag("GameLogic");
 
         page = this.gameObject;
-        
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -49,13 +49,18 @@ public class CollectPages : MonoBehaviour
 
     void Update()
     {
-        if(inReach && Input.GetButtonDown("pickup"))
+        if (inReach && Input.GetButtonDown("pickup"))
         {
             gameLogic.GetComponent<GameLogic>().pageCount += 1;
             collectSound.Play();
             collectText.SetActive(false);
             page.SetActive(false);
             inReach = false;
+
+            // Node pageNode = grid.NodeFromWorldPoint(page.position);
+            // Pathfinding.pagesTaken.Add(pageNode.worldPosition);
+
+
         }
 
         // if(pageCount = 1)
@@ -63,6 +68,6 @@ public class CollectPages : MonoBehaviour
         //     SceneManager.LoadScene(level2);
         // }
 
-        
+
     }
 }
