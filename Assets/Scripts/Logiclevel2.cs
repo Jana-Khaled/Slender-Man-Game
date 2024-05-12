@@ -9,13 +9,14 @@ public class Logiclevel2 : MonoBehaviour
     public GameObject counter;
 
     public int pageCount;
-     public string level3;
-
+    public string level3;
+    public int maxParrotCountForLevel;
 
     void Start()
     {
         pageCount = 0;
-        
+        maxParrotCountForLevel = 3;
+        Pathfinding.parrotCount = maxParrotCountForLevel;
     }
 
 
@@ -23,11 +24,9 @@ public class Logiclevel2 : MonoBehaviour
     {
         counter.GetComponent<Text>().text = pageCount + "/6";
 
-        if(pageCount == 6)
+        if (pageCount == 6)
         {
             SceneManager.LoadScene(level3);
         }
-
-
     }
 }

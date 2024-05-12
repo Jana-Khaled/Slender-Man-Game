@@ -14,6 +14,7 @@ public class Pathfinding : MonoBehaviour
 
     public static HashSet<Vector3> pagesTaken = new HashSet<Vector3>();
 
+    public static int parrotCount = 3; // Maximum number of parrots allowed
 
     Grid grid;
     List<Node> path;
@@ -54,8 +55,9 @@ public class Pathfinding : MonoBehaviour
             isParrotFlying = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isParrotFlying)
+        if (Input.GetKeyDown(KeyCode.E) && !isParrotFlying && parrotCount > 0)
         {
+            parrotCount--;
             SpawnParrotAndFollow();
 
             // Initialize a list to store active page transforms
