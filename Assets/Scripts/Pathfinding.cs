@@ -14,10 +14,12 @@ public class Pathfinding : MonoBehaviour
 
     public static HashSet<Vector3> pagesTaken = new HashSet<Vector3>();
 
+    public static int parrotCount = 3; // Maximum number of parrots allowed
 
     Grid grid;
     List<Node> path;
     Transform[] pagesTransforms; // Array of Transform
+    bool isParrotFlying = false;
 
     void Start()
     {
@@ -32,9 +34,31 @@ public class Pathfinding : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (path != null && path.Count > 0)
         {
-            SpawnSphereAndFollow();
+            isParrotFlying = true;
+            Vector3 nextWaypoint = path[0].worldPosition;
+            Vector3 nextHorizontalPosition = new(nextWaypoint.x, parrot.position.y, nextWaypoint.z);
+            parrot.position = Vector3.MoveTowards(parrot.position, nextHorizontalPosition, speed * Time.deltaTime);
+
+            if (Vector3.Distance(parrot.position, nextHorizontalPosition) < 0.1f)
+            {
+                path.RemoveAt(0);
+            }
+            if (path.Count == 1)
+            {
+                pagesTaken.Add(path[0].worldPosition);
+            }
+        }
+        else
+        {
+            isParrotFlying = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && !isParrotFlying && parrotCount > 0)
+        {
+            parrotCount--;
+            SpawnParrotAndFollow();
 
             // Initialize a list to store active page transforms
             List<Transform> activePages = new List<Transform>();
@@ -55,25 +79,9 @@ public class Pathfinding : MonoBehaviour
 
             FindPath(parrot.position, pagesTransforms);
         }
-
-        if (path != null && path.Count > 0)
-        {
-            Vector3 nextWaypoint = path[0].worldPosition;
-            Vector3 nextHorizontalPosition = new(nextWaypoint.x, parrot.position.y, nextWaypoint.z);
-            parrot.position = Vector3.MoveTowards(parrot.position, nextHorizontalPosition, speed * Time.deltaTime);
-
-            if (Vector3.Distance(parrot.position, nextHorizontalPosition) < 0.1f)
-            {
-                path.RemoveAt(0);
-            }
-            if (path.Count == 1)
-            {
-                pagesTaken.Add(path[0].worldPosition);
-            }
-        }
     }
 
-    public void SpawnSphereAndFollow()
+    void SpawnParrotAndFollow()
     {
         parrot.position = seeker.transform.position;
         parrot.position += Vector3.up * 2;

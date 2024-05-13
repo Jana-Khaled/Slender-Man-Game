@@ -9,13 +9,12 @@ public class Logiclevel3 : MonoBehaviour
     public GameObject counter;
 
     public int pageCount;
-     public string level4;
+    public string level4;
 
 
     void Start()
     {
         pageCount = 0;
-        
     }
 
 
@@ -23,11 +22,9 @@ public class Logiclevel3 : MonoBehaviour
     {
         counter.GetComponent<Text>().text = pageCount + "/7";
 
-        if(pageCount == 7)
+        if (pageCount == 7)
         {
             SceneManager.LoadScene(level4);
         }
-
-
     }
 }
