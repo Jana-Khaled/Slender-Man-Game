@@ -13,7 +13,7 @@ public class Pathfinding : MonoBehaviour
 
     public static HashSet<Vector3> pagesTaken = new HashSet<Vector3>();
 
-    public static int parrotCount = 3;
+    public static int parrotCount = 420;
 
     public Transform[] parrots;
     public GameObject parrots_number_text;
