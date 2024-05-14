@@ -11,15 +11,15 @@ public class Logiclevel2 : MonoBehaviour
 
     public int pageCount;
     public string level3;
-    public int maxParrotCountForLevel;
+    public int maxGhostsCountForLevel;
     public int parrotCounts;
 
     void Start()
     {
         pageCount = 0;
         parrotCounts = 0;
-        maxParrotCountForLevel = 4;
-        Pathfinding.parrotCount = maxParrotCountForLevel;
+        maxGhostsCountForLevel = 4;
+        Pathfinding.ghostCount = maxGhostsCountForLevel;
     }
 
 

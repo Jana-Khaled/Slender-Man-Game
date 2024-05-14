@@ -8,19 +8,19 @@ public class Pathfinding : MonoBehaviour
 {
     public Transform seeker;
     public GameObject[] pages;
-    public Transform parrot;
+    public Transform ghost;
     public float speed = 5f;
 
     public static HashSet<Vector3> pagesTaken = new HashSet<Vector3>();
 
-    public static int parrotCount = 420;
+    public static int ghostCount = 420;
 
-    public Transform[] parrots;
-    public GameObject parrots_number_text;
+    public Transform[] ghosts;
+    public GameObject ghosts_number_text;
     Grid grid;
     List<Node> path;
     Transform[] pagesTransforms;
-    bool isParrotFlying = false;
+    bool isGhostFlying = false;
     private GameObject gameLogic;
 
 
@@ -39,12 +39,12 @@ public class Pathfinding : MonoBehaviour
     {
         if (path != null && path.Count > 0)
         {
-            isParrotFlying = true;
+            isGhostFlying = true;
             Vector3 nextWaypoint = path[0].worldPosition;
-            Vector3 nextHorizontalPosition = new(nextWaypoint.x, parrot.position.y, nextWaypoint.z);
-            parrot.position = Vector3.MoveTowards(parrot.position, nextHorizontalPosition, speed * Time.deltaTime);
+            Vector3 nextHorizontalPosition = new(nextWaypoint.x, ghost.position.y, nextWaypoint.z);
+            ghost.position = Vector3.MoveTowards(ghost.position, nextHorizontalPosition, speed * Time.deltaTime);
 
-            if (Vector3.Distance(parrot.position, nextHorizontalPosition) < 0.1f)
+            if (Vector3.Distance(ghost.position, nextHorizontalPosition) < 0.1f)
             {
                 path.RemoveAt(0);
             }
@@ -55,14 +55,14 @@ public class Pathfinding : MonoBehaviour
         }
         else
         {
-            isParrotFlying = false;
+            isGhostFlying = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isParrotFlying && parrotCount > 0)
+        if (Input.GetKeyDown(KeyCode.E) && !isGhostFlying && ghostCount > 0)
         {
-            gameLogic.GetComponent<GameLogic>().parrotCounts += 1;
-            parrotCount--;
-            SpawnParrotAndFollow();
+            gameLogic.GetComponent<GameLogic>().ghostCounts += 1;
+            ghostCount--;
+            SpawnGhostAndFollow();
 
             List<Transform> activePages = new List<Transform>();
 
@@ -76,14 +76,14 @@ public class Pathfinding : MonoBehaviour
 
             pagesTransforms = activePages.ToArray();
 
-            FindPath(parrot.position, pagesTransforms);
+            FindPath(ghost.position, pagesTransforms);
         }
     }
 
-    void SpawnParrotAndFollow()
+    void SpawnGhostAndFollow()
     {
-        parrot.position = seeker.transform.position;
-        parrot.position += Vector3.up * 2;
+        ghost.position = seeker.transform.position;
+        ghost.position += Vector3.up * 2;
     }
 
     void FindPath(Vector3 startPos, Transform[] pagesTransforms)
