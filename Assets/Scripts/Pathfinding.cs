@@ -16,13 +16,18 @@ public class Pathfinding : MonoBehaviour
 
     public static int parrotCount = 3; // Maximum number of parrots allowed
 
+    public Transform[] parrots;
+    public GameObject parrots_number_text;
     Grid grid;
     List<Node> path;
     Transform[] pagesTransforms; // Array of Transform
     bool isParrotFlying = false;
+    private GameObject gameLogic;
+
 
     void Start()
     {
+        gameLogic = GameObject.FindWithTag("GameLogic");
         // Initialize the array of Transforms with the same size as the array of GameObjects
     }
 
@@ -57,6 +62,7 @@ public class Pathfinding : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && !isParrotFlying && parrotCount > 0)
         {
+            gameLogic.GetComponent<GameLogic>().parrotCounts += 1;
             parrotCount--;
             SpawnParrotAndFollow();
 
@@ -78,6 +84,7 @@ public class Pathfinding : MonoBehaviour
             pagesTransforms = activePages.ToArray();
 
             FindPath(parrot.position, pagesTransforms);
+            // FindPathBFS(parrot.position, pagesTransforms);
         }
     }
 
@@ -134,6 +141,58 @@ public class Pathfinding : MonoBehaviour
             }
         }
     }
+
+    void FindPathBFS(Vector3 startPos, Transform[] pagesTransforms)
+    {
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node[] targetNodes = new Node[pagesTransforms.Length];
+        HashSet<Node>[] closedSets = new HashSet<Node>[pagesTransforms.Length];
+
+        for (int i = 0; i < pagesTransforms.Length; i++)
+        {
+            targetNodes[i] = grid.NodeFromWorldPoint(pagesTransforms[i].position);
+            closedSets[i] = new HashSet<Node>();
+        }
+
+        Queue<Node> openSet = new Queue<Node>();
+        openSet.Enqueue(startNode);
+
+        while (openSet.Count > 0)
+        {
+            Node currentNode = openSet.Dequeue();
+
+            // Check if the current node is one of the target nodes and if it hasn't been collected yet
+            for (int i = 0; i < targetNodes.Length; i++)
+            {
+                if (targetNodes[i] == currentNode && !pagesTaken.Contains(currentNode.worldPosition))
+                {
+                    RetracePath(startNode, currentNode);
+                    pagesTaken.Add(currentNode.worldPosition);
+                    break;
+                }
+            }
+
+            if (pagesTaken.Count == pagesTransforms.Length)
+                break;
+
+            foreach (Node neighbour in grid.GetNeighbours(currentNode))
+            {
+                if (!neighbour.walkable || closedSets.Any(set => set.Contains(neighbour)))
+                {
+                    continue;
+                }
+
+                openSet.Enqueue(neighbour);
+
+                foreach (var set in closedSets)
+                {
+                    set.Add(neighbour);
+                }
+            }
+        }
+    }
+
+
 
 
     void RetracePath(Node startNode, Node endNode)
