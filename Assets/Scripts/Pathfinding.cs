@@ -28,7 +28,6 @@ public class Pathfinding : MonoBehaviour
     void Start()
     {
         gameLogic = GameObject.FindWithTag("GameLogic");
-        // Initialize the array of Transforms with the same size as the array of GameObjects
     }
 
 
@@ -66,25 +65,19 @@ public class Pathfinding : MonoBehaviour
             parrotCount--;
             SpawnParrotAndFollow();
 
-            // Initialize a list to store active page transforms
             List<Transform> activePages = new List<Transform>();
 
-            // Iterate over the pages array to find active pages
             for (int i = 0; i < pages.Length; i++)
             {
-                // Check if the page is active
                 if (pages[i].activeSelf)
                 {
-                    // Add the transform of the active page to the list
                     activePages.Add(pages[i].transform);
                 }
             }
 
-            // Convert the list of active page transforms to an array
             pagesTransforms = activePages.ToArray();
 
             FindPath(parrot.position, pagesTransforms);
-            // FindPathBFS(parrot.position, pagesTransforms);
         }
     }
 
@@ -113,7 +106,6 @@ public class Pathfinding : MonoBehaviour
             Node currentNode = openSet.RemoveFirst();
             closedSet.Add(currentNode);
 
-            // Check if the current node is one of the target nodes and if it hasn't been collected yet
             if (Array.Exists(targetNodes, node => node == currentNode) && !pagesTaken.Contains(currentNode.worldPosition))
             {
                 RetracePath(startNode, currentNode);
@@ -161,7 +153,6 @@ public class Pathfinding : MonoBehaviour
         {
             Node currentNode = openSet.Dequeue();
 
-            // Check if the current node is one of the target nodes and if it hasn't been collected yet
             for (int i = 0; i < targetNodes.Length; i++)
             {
                 if (targetNodes[i] == currentNode && !pagesTaken.Contains(currentNode.worldPosition))

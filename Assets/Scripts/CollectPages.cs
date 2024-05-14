@@ -14,7 +14,6 @@ public class CollectPages : MonoBehaviour
     private bool inReach;
 
     private GameObject gameLogic;
-    // public string level2;
 
 
     void Start()
@@ -56,18 +55,6 @@ public class CollectPages : MonoBehaviour
             collectText.SetActive(false);
             page.SetActive(false);
             inReach = false;
-
-            // Node pageNode = grid.NodeFromWorldPoint(page.position);
-            // Pathfinding.pagesTaken.Add(pageNode.worldPosition);
-
-
         }
-
-        // if(pageCount = 1)
-        // {
-        //     SceneManager.LoadScene(level2);
-        // }
-
-
     }
 }
