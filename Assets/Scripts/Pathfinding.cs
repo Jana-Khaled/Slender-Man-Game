@@ -7,20 +7,19 @@ using System.Linq;
 public class Pathfinding : MonoBehaviour
 {
     public Transform seeker;
-    // public Transform[] targets; // Array of targets
     public GameObject[] pages;
     public Transform parrot;
     public float speed = 5f;
 
     public static HashSet<Vector3> pagesTaken = new HashSet<Vector3>();
 
-    public static int parrotCount = 3; // Maximum number of parrots allowed
+    public static int parrotCount = 3;
 
     public Transform[] parrots;
     public GameObject parrots_number_text;
     Grid grid;
     List<Node> path;
-    Transform[] pagesTransforms; // Array of Transform
+    Transform[] pagesTransforms;
     bool isParrotFlying = false;
     private GameObject gameLogic;
 
